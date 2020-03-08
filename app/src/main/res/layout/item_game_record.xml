@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+
+
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    >
+
+    <TextView
+        android:id="@+id/game_record_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="13"
+        android:gravity="center_vertical"
+        android:text="TextView"
+
+        android:textColor="@color/colorblack"
+        android:textSize="14sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/game_record_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="3"
+        android:gravity="center_vertical"
+        android:text="50"
+        android:textAlignment="center"
+        android:textColor="@color/colorblack"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/game_record_time"
+        app:layout_constraintStart_toEndOf="@+id/text_game_record"
+        app:layout_constraintTop_toTopOf="@+id/game_record_time"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/text_game_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="포획한 디그다 수 : "
+        android:ems="7"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/game_record_time"
+        app:layout_constraintStart_toEndOf="@+id/game_record_time"
+        app:layout_constraintTop_toTopOf="@+id/game_record_time" />
+</androidx.constraintlayout.widget.ConstraintLayout>

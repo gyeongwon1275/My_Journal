@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    >
+
+
+    <TextView
+        android:id="@+id/password_set_text"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorgrey"
+        android:gravity="center_vertical"
+        android:text="잠금기능설정"
+        android:textColor="@color/colorblack"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+
+        android:text="비밀번호사용"
+        android:textColor="@color/colorblack"
+        android:id="@+id/password_input_text"
+        app:layout_constraintTop_toBottomOf="@id/password_set_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/password_reset_text"
+        app:layout_constraintRight_toLeftOf="@id/checkBox_password"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        app:layout_constraintHorizontal_chainStyle="packed"
+
+        />
+
+    <CheckBox
+        android:id="@+id/checkBox_password"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/password_input_text"
+        app:layout_constraintTop_toBottomOf="@id/password_set_text"
+        app:layout_constraintBottom_toBottomOf="@id/password_input_text"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:onClick="move_set_password"
+
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+
+        android:text="비밀번호 재설정"
+        android:textColor="@color/colorblack"
+        android:id="@+id/password_reset_text"
+        app:layout_constraintTop_toBottomOf="@id/password_input_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="18dp"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/setting_alarm_text"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorgrey"
+        android:gravity="center_vertical"
+        android:text="알람기능설정"
+        android:textColor="@color/colorblack"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_reset_text" />
+
+    <TextView
+        android:id="@+id/setting_alarm"
+        android:layout_width="match_parent"
+
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorblack"
+        android:textSize="18dp"
+        android:text="알람설정"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_alarm_text" />
+
+    <CheckBox
+        android:id="@+id/checkBox_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/setting_alarm"
+        app:layout_constraintEnd_toEndOf="@+id/setting_alarm"
+        app:layout_constraintTop_toBottomOf="@+id/setting_alarm_text" />
+
+    <TextView
+        android:id="@+id/manage_data_text"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorgrey"
+        android:gravity="center_vertical"
+        android:text="데이터관리"
+        android:textColor="@color/colorblack"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_alarm" />
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+
+    android:text="데이터 백업,복구"
+    android:textColor="@color/colorblack"
+    android:id="@+id/data_backup_text"
+    app:layout_constraintTop_toBottomOf="@id/manage_data_text"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:textSize="18dp"
+    android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/text_alarm"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="알람시간"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorblack"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_alarm" />
+
+    <TextView
+        android:id="@+id/text_alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text=""
+        android:ems="4"
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorblack"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_alarm"
+        app:layout_constraintEnd_toEndOf="@+id/text_alarm"
+        app:layout_constraintTop_toBottomOf="@+id/setting_alarm" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

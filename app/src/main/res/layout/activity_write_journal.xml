@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
+    tools:context=".Journal.Write_journal_activitiy"
+
+    >
+
+    <TextView
+        android:id="@+id/date_today"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+
+        android:layout_marginTop="16dp"
+        android:ems="5"
+        android:gravity="center_vertical"
+        android:inputType="date"
+
+
+        android:textAlignment="center"
+        android:textSize="30dp"
+
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <ScrollView
+        android:id="@+id/write_journal_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_today">
+
+        <EditText
+            android:id="@+id/edit_journal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="글을 입력해주세요"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_today"
+
+            />
+    </ScrollView>
+
+
+    <com.airbnb.lottie.LottieAnimationView
+
+        android:id="@+id/button_set_audio"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="put_music"
+        android:scaleType="fitXY"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/button_image"
+        app:layout_constraintTop_toBottomOf="@+id/write_journal_scroll"
+        app:lottie_autoPlay="true"
+
+        app:lottie_colorFilter="@color/colorblack"
+        app:lottie_fileName="892-loading-icon.json"
+        app:lottie_loop="true" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/button_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="bring_image"
+        android:scaleType="fitXY"
+        app:lottie_fileName="5704-choose-photo.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintBottom_toBottomOf="@id/button_set_audio"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toRightOf="@id/button_set_audio"
+        app:layout_constraintRight_toLeftOf="@id/button_map"
+
+
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/button_map"
+        android:layout_width="55dp"
+        android:layout_height="50dp"
+        app:lottie_fileName="1342-location.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@id/button_set_audio"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toRightOf="@id/button_image"
+        app:layout_constraintRight_toRightOf="@id/button_share"
+
+
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/button_share"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="share_journal"
+        android:scaleType="fitXY"
+        app:lottie_fileName="1755-share-for-graminsta-app.json"
+        app:lottie_colorFilter="@color/colorblack"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintBottom_toBottomOf="@id/button_set_audio"
+
+        app:layout_constraintHorizontal_chainStyle="packed"
+
+        app:layout_constraintLeft_toRightOf="@id/button_map"
+
+
+
+        />
+
+    <ImageView
+        android:id="@+id/journal_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+
+        android:scaleType="fitXY"
+
+
+        android:src="@color/colorwhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintStart_toEndOf="@+id/button_share"
+        app:layout_constraintTop_toTopOf="@+id/button_set_audio" />
+
+    <TextView
+        android:id="@+id/text_today_mood"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:ems="8"
+        android:gravity="center_vertical"
+        android:text="      기분"
+        android:textAlignment="center"
+        android:onClick= "pick_number"
+
+
+        app:layout_constraintStart_toEndOf="@+id/date_today"
+        app:layout_constraintTop_toTopOf="@+id/date_today" />
+
+    <TextView
+        android:id="@+id/rating_number"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+
+        android:ems="1"
+        android:gravity="center_vertical"
+        android:hint="0"
+        android:textAlignment="center"
+
+        app:layout_constraintStart_toEndOf="@+id/mood_text"
+        app:layout_constraintTop_toBottomOf="@+id/text_today_mood" />
+
+    <TextView
+        android:id="@+id/mood_text"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:ems="6"
+        android:gravity="center_vertical"
+        android:hint="매우좋음"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/date_today"
+        app:layout_constraintStart_toStartOf="@+id/text_today_mood"
+        app:layout_constraintTop_toBottomOf="@+id/text_today_mood" />
+
+    <TextView
+        android:id="@+id/mood_point"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:ems="1"
+        android:gravity="center_vertical"
+
+        android:text="점"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/mood_text"
+        app:layout_constraintEnd_toEndOf="@+id/text_today_mood"
+        app:layout_constraintStart_toEndOf="@+id/rating_number"
+        app:layout_constraintTop_toBottomOf="@+id/text_today_mood"
+        android:onClick= "pick_number"
+
+        />
+
+    <ImageView
+        android:id="@+id/music_play"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+
+        android:scaleType="fitXY"
+
+        app:layout_constraintEnd_toEndOf="@+id/seekBar_music"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/seekBar_music"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar_music"
+        app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/Button_number_pick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/text_today_mood"
+        app:layout_constraintEnd_toEndOf="@+id/text_today_mood"
+        app:layout_constraintStart_toStartOf="@+id/rating_number"
+        app:layout_constraintTop_toTopOf="@+id/text_today_mood"
+        android:background="#00ff0000"
+
+        app:srcCompat="@drawable/ic_arrow_drop_down_black_50dp" />
+
+    <SeekBar
+        android:id="@+id/seekBar_music"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/button_share"
+        app:layout_constraintStart_toStartOf="@+id/button_set_audio"
+        app:layout_constraintTop_toBottomOf="@+id/button_set_audio" />
+
+    <TextView
+        android:id="@+id/play_time_asmr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="3"
+        app:layout_constraintEnd_toStartOf="@+id/total_time_asmr"
+        app:layout_constraintTop_toTopOf="@+id/total_time_asmr"
+        android:textAlignment="viewEnd"
+
+        />
+
+    <TextView
+        android:id="@+id/total_time_asmr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar_music"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar_music" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+

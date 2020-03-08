@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Start_journal_activity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/start_journal_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        app:lottie_colorFilter="@color/colorblack"
+        app:lottie_fileName="2275-loading-book.json"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/start_journal_menu"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:background="@color/colorwhite"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_menu_black_24dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

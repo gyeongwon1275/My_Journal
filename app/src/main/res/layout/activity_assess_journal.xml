@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Assess.Assess_journal_activitiy"
+    android:padding="10dp"
+    android:background="@color/colorwhite"
+
+    >
+
+    <TextView
+        android:id="@+id/assement_rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:background="@drawable/border"
+        android:ems="8"
+        android:text="만족도"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.968"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/average_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:text="평균"
+        android:textAlignment="center"
+
+        app:layout_constraintStart_toStartOf="@+id/assement_rating_text"
+        app:layout_constraintTop_toBottomOf="@+id/assement_rating_text"
+        android:background="@drawable/border"/>
+
+    <TextView
+        android:id="@+id/max_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:text="최대값"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/assement_rating_text"
+        app:layout_constraintTop_toBottomOf="@+id/min_text"
+        android:background="@drawable/border"/>
+
+    <TextView
+        android:id="@+id/min_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:text="최소값"
+        android:textAlignment="center"
+
+        app:layout_constraintStart_toStartOf="@+id/assement_rating_text"
+        app:layout_constraintTop_toBottomOf="@+id/average_text"
+        android:background="@drawable/border"/>
+
+    <TextView
+        android:id="@+id/rating_average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:ems="4"
+        android:hint="average"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/assement_rating_text"
+        app:layout_constraintStart_toEndOf="@+id/average_text"
+        app:layout_constraintTop_toBottomOf="@+id/assement_rating_text"
+
+
+        />
+
+    <TextView
+        android:id="@+id/max_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:ems="4"
+        android:hint="Max"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/assement_rating_text"
+        app:layout_constraintStart_toEndOf="@+id/min_text"
+        app:layout_constraintTop_toBottomOf="@+id/rating_average" />
+
+    <TextView
+        android:id="@+id/min_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:ems="4"
+        android:hint="Min"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/assement_rating_text"
+        app:layout_constraintStart_toEndOf="@+id/max_text"
+        app:layout_constraintTop_toBottomOf="@+id/max_rating" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_assess"
+        android:layout_width="0dp"
+        android:layout_height="450dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        tools:listitem="@layout/item_assess_journal" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/border"
+        android:ems="4"
+        android:gravity="center_vertical"
+        android:text="만족도"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/border"
+        android:ems="4"
+        android:gravity="center_vertical"
+        android:text="요일"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView4" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

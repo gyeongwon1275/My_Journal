@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    >
+    <item
+        android:id="@+id/menu_save"
+        android:icon="@drawable/ic_save_black_24dp"
+        android:title="저장"
+        app:showAsAction="always"
+        android:onClick="save_data"
+        />
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="검색"
+        app:showAsAction="never"
+
+        />
+    <item
+        android:id="@+id/menu_setting"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="설정"
+        app:showAsAction="never"
+
+        />
+
+    <item
+        android:id="@+id/menu_assessment"
+        android:icon="@drawable/assement"
+        android:title="통계"
+        app:showAsAction="never"
+
+
+        />
+    <item
+        android:id="@+id/menu_habit"
+        android:title="습관등록"
+
+        />
+
+    <item
+        android:id="@+id/menu_hour_report"
+        android:title="시간당 기록"
+
+        />
+
+</menu>
