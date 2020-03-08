@@ -2,6 +2,7 @@ package com.example.my_journal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -17,7 +18,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
+
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,7 +47,7 @@ import android.location.Address;
 public class Map_activity extends AppCompatActivity implements OnMapReadyCallback {
 
 
-    private GoogleMap mMap;
+    private GoogleMap map;
     private Marker currentMarker = null;
 
     private static final String TAG = "googlemap_example";
@@ -68,43 +69,95 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng currentPosition;
 
 
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest locationRequest;
+    private FusedLocationProviderClient fused_location_client;
+    private LocationRequest location_request;
     private Location location;
 
 
-    private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
-    // (참고로 Toast에서는 Context가 필요했습니다.)
+    private View map_layout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
+
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         setContentView(R.layout.activity_map);
 
-        mLayout = findViewById(R.id.map_layout);
+        map_layout = findViewById(R.id.map_layout);
+        searchView = findViewById(R.id.loaction_search_view);
 
-        locationRequest = new LocationRequest()
+        // 위치를 어떤 수준으로 어떻게 요청할건지 설정
+        location_request = new LocationRequest()
+                // 정밀하게
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+
+                // 위치정보를 느린 간격으로 update
                 .setInterval(UPDATE_INTERVAL_MS)
+                // 외치정보를 빠른 간격으로 update
                 .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
 
-
+        // 위치요청 설정
         LocationSettingsRequest.Builder builder =
                 new LocationSettingsRequest.Builder();
 
-        builder.addLocationRequest(locationRequest);
+        builder.addLocationRequest(location_request);
 
+        // The LocationServices interface is the main entry point for Android location services.
+        // LocationServices 사용위해 FusedLocationProviderClient 객체 생성
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fused_location_client = LocationServices.getFusedLocationProviderClient(this);
 
-
+        // 구글 map fragment 생성
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        // onMapReady 메서드 호출
+
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                String location = searchView.getQuery().toString();
+
+                List<Address> address_list = null;
+
+
+                if (location != null) {  // 지오코딩(GeoCoding) 이란  '주소나 지명' 을 '좌표 (위도, 경도)' 로 변환시키는 작업이다
+
+
+                    Geocoder geocoder = new Geocoder(Map_activity.this);
+
+                    // 위치정보를 네트워크 상태에 따라 받을 수도 있고 못받을 수도 있음
+
+
+                    // 검색결과 1개만
+                    try {
+                        address_list = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                Address address = address_list.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+                map.addMarker(new MarkerOptions().position(latLng).title(location));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
+
+
+
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         mapFragment.getMapAsync(this);
     }
 
@@ -112,10 +165,11 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(final GoogleMap googleMap) {
         Log.d(TAG, "onMapReady :");
 
-        mMap = googleMap;
+        map = googleMap;
 
         //런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
         //지도의 초기위치를 서울로 이동
+
         setDefaultLocation();
 
 
@@ -143,7 +197,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
 
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-                Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
+                Snackbar.make(map_layout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                         Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
                     @Override
@@ -165,10 +219,11 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
-
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        // 구글 맵의 UI 설정, 현재자신의 위치 버튼 가능하도록 설정
+        map.getUiSettings().setMyLocationButtonEnabled(true);
+        // 지도 확대
+        map.animateCamera(CameraUpdateFactory.zoomTo(17));
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
             @Override
             public void onMapClick(LatLng latLng) {
@@ -183,17 +238,20 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
 
+            // 위치정보 받은 것 리스트에 저장
             List<Location> locationList = locationResult.getLocations();
 
             if (locationList.size() > 0) {
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
 
+                // 현재위치에 위치정보에서 위도, 경도 추출해서 집어넣음
                 currentPosition
                         = new LatLng(location.getLatitude(), location.getLongitude());
 
-
+                // 마커 제목 : 현재위치의 주소
                 String markerTitle = getCurrentAddress(currentPosition);
+                // 자투리 내용 : 위도, 경도
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
 
@@ -234,12 +292,14 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
 
-            Log.d(TAG, "startLocationUpdates : call mFusedLocationClient.requestLocationUpdates");
+            Log.d(TAG, "startLocationUpdates : call fused_location_client.requestLocationUpdates");
 
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+            // 위치 업데이트 요청
+            // 위치요청어떻게 할건지, 요청받아서 뭘할건지,
+            fused_location_client.requestLocationUpdates(location_request, locationCallback, Looper.myLooper());
 
             if (checkPermission())
-                mMap.setMyLocationEnabled(true);
+                map.setMyLocationEnabled(true);
 
         }
 
@@ -254,27 +314,27 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (checkPermission()) {
 
-            Log.d(TAG, "onStart : call mFusedLocationClient.requestLocationUpdates");
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            Log.d(TAG, "onStart : call fused_location_client.requestLocationUpdates");
+            fused_location_client.requestLocationUpdates(location_request, locationCallback, null);
 
-            if (mMap != null)
-                mMap.setMyLocationEnabled(true);
+            if (map != null)
+                map.setMyLocationEnabled(true);
 
         }
 
 
     }
 
-
+    // 액티비티 화면주도권을 상실할 경우 위치 업데이트 불필요함
     @Override
     protected void onStop() {
 
         super.onStop();
 
-        if (mFusedLocationClient != null) {
+        if (fused_location_client != null) {
 
             Log.d(TAG, "onStop : call stopLocationUpdates");
-            mFusedLocationClient.removeLocationUpdates(locationCallback);
+            fused_location_client.removeLocationUpdates(locationCallback);
         }
     }
 
@@ -287,11 +347,11 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         List<Address> addresses;
 
         try {
-
+            // address List 에 onLocationResult() 에서 인자로 넘어온 위치에서 위도,경도 추출하여 geocoder에 설정
             addresses = geocoder.getFromLocation(
                     latlng.latitude,
                     latlng.longitude,
-                    1);
+                    1); // 결과는 1개만
         } catch (IOException ioException) {
             //네트워크 문제
             Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
@@ -308,15 +368,24 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             return "주소 미발견";
 
         } else {
+            // List 에 있던 data 주소로 변환하여 return
             Address address = addresses.get(0);
-            return address.getAddressLine(0).toString();
+            return address.getAddressLine(0);
         }
 
     }
 
 
     public boolean checkLocationServicesStatus() {
+        // 시스템으로 부터 기기 사용자가 어느 국가에 있는지 정보를 받아온다.
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Provider 설정
+        // GPS_PROVIDER
+        //  A special location provider for receiving locations without actually initiating
+        //     * a location fix.
+        // 위치고정 초기화 없이 위치를 가져온다.
+
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -332,16 +401,20 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         MarkerOptions markerOptions = new MarkerOptions();
+        // 마커에 현재위치 설정
         markerOptions.position(currentLatLng);
+        // 마커 정보 설정
         markerOptions.title(markerTitle);
         markerOptions.snippet(markerSnippet);
+        // 마커 이동가능 여부 설정
         markerOptions.draggable(true);
 
 
-        currentMarker = mMap.addMarker(markerOptions);
+        currentMarker = map.addMarker(markerOptions);
 
+        // 마커 설정한 곳으로 카메라 이동
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
-        mMap.moveCamera(cameraUpdate);
+        map.moveCamera(cameraUpdate);
 
     }
 
@@ -349,12 +422,13 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
     public void setDefaultLocation() {
 
 
-        //디폴트 위치, Seoul
+        //기본 위치, Seoul
+        // 기본 위치 설정 안하면 처음 화면에서 한국이 아닌 곳으로 설정함
         LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
 
-
+        // 현재위치 마커를 초기화
         if (currentMarker != null) currentMarker.remove();
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -363,15 +437,15 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        currentMarker = mMap.addMarker(markerOptions);
+        currentMarker = map.addMarker(markerOptions);
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
-        mMap.moveCamera(cameraUpdate);
+        map.moveCamera(cameraUpdate);
 
     }
 
 
-    //여기부터는 런타임 퍼미션 처리을 위한 메소드들
+    // 런타임 퍼미션 처리을 위한 메소드들
     private boolean checkPermission() {
 
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
@@ -427,7 +501,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                     // 사용자가 거부만 선택한 경우에는 앱을 다시 실행하여 허용을 선택하면 앱을 사용할 수 있습니다.
-                    Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
+                    Snackbar.make(map_layout, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
                             Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
                         @Override
@@ -441,7 +515,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                     // "다시 묻지 않음"을 사용자가 체크하고 거부를 선택한 경우에는 설정(앱 정보)에서 퍼미션을 허용해야 앱을 사용할 수 있습니다.
-                    Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
+                    Snackbar.make(map_layout, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
                             Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
                         @Override
@@ -457,7 +531,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    //여기부터는 GPS 활성화를 위한 메소드들
+    // 사용자가 GPS 꺼놨을 경우 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Map_activity.this);
