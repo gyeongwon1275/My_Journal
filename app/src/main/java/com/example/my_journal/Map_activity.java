@@ -52,6 +52,8 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
+
+
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
@@ -65,7 +67,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};  // 외부 저장소
 
 
-    Location mCurrentLocatiion;
+    Location current_locatiion;
     LatLng currentPosition;
 
 
@@ -90,12 +92,14 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         // 위치를 어떤 수준으로 어떻게 요청할건지 설정
         location_request = new LocationRequest()
                 // 정밀하게
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-                // 위치정보를 느린 간격으로 update
-                .setInterval(UPDATE_INTERVAL_MS)
-                // 외치정보를 빠른 간격으로 update
-                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
+        // 현재위치지정을 한번만 하도록
+
+//                // 위치정보를 느린 간격으로 update
+//                .setInterval(UPDATE_INTERVAL_MS)
+//                // 외치정보를 빠른 간격으로 update
+//                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
 
         // 위치요청 설정
         LocationSettingsRequest.Builder builder =
@@ -114,7 +118,6 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         // onMapReady 메서드 호출
 
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -124,8 +127,9 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
                 List<Address> address_list = null;
 
 
-                if (location != null) {  // 지오코딩(GeoCoding) 이란  '주소나 지명' 을 '좌표 (위도, 경도)' 로 변환시키는 작업이다
+                if (location != null) {
 
+                    // 지오코딩(GeoCoding) 이란  '주소나 지명' 을 '좌표 (위도, 경도)' 로 변환시키는 작업이다
 
                     Geocoder geocoder = new Geocoder(Map_activity.this);
 
@@ -142,11 +146,9 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 Address address = address_list.get(0);
-                LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 map.addMarker(new MarkerOptions().position(latLng).title(location));
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
-
-
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
 
                 return false;
@@ -167,8 +169,33 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
         map = googleMap;
 
-        //런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
-        //지도의 초기위치를 서울로 이동
+        map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+
+                Log.i("long_click", "longlong");
+
+                MarkerOptions markerOptions = new MarkerOptions();
+
+                markerOptions.position(latLng);
+
+                // 선택한 좌표에서 주소를 받아와서 Marker 의 Title 에 표시
+
+                markerOptions.title(getCurrentAddress(latLng));
+                markerOptions.snippet("위도 : " +latLng.latitude + " " +"경도 : "+ latLng.longitude);
+
+                map.clear();
+
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+
+                map.addMarker(markerOptions);
+
+
+            }
+        });
+
+
+        //지도의 초기위치를 설정
 
         setDefaultLocation();
 
@@ -257,16 +284,12 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
-
                 //현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location, markerTitle, markerSnippet);
 
-                mCurrentLocatiion = location;
+                current_locatiion = location;
             }
-
-
         }
-
     };
 
 
@@ -338,7 +361,8 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
+    // 좌표를 받아서 한글주소로 나오게 하는 메서드
+    // TODO
     public String getCurrentAddress(LatLng latlng) {
 
         //지오코더... GPS를 주소로 변환
@@ -368,7 +392,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             return "주소 미발견";
 
         } else {
-            // List 에 있던 data 주소로 변환하여 return
+            // List 에 있던 data를 주소로 변환하여 return
             Address address = addresses.get(0);
             return address.getAddressLine(0);
         }

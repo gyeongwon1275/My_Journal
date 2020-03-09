@@ -15,18 +15,21 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsActivity" />
+        tools:context=".MapsActivity"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="322dp" />
 
     <androidx.appcompat.widget.SearchView
 
         android:id="@+id/loaction_search_view"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        app:iconifiedByDefault="false"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
-        android:elevation="5dp"
         android:background="@color/colorwhite"
+        android:elevation="5dp"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="위치검색" />
