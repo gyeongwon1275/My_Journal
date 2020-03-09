@@ -57,11 +57,11 @@
         android:layout_height="wrap_content"
 
         android:background="#c0c0c0"
-        app:layout_constraintHorizontal_chainStyle="packed"
         android:text="설정"
         android:textColor="@color/colorblack"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/menu_list"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/menu_game"
         app:layout_constraintTop_toTopOf="@+id/menu_game" />
 
@@ -85,16 +85,15 @@
     <ImageView
         android:id="@+id/menu_image"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:src="@drawable/ic_image_black_24dp"
+        android:layout_height="370dp"
+        android:padding="3dp"
         android:scaleType="fitXY"
+        android:src="@drawable/ic_image_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_text_time"
         app:layout_constraintVertical_bias="0.1"
-        android:padding="3dp"
-
 
 
         />
@@ -103,19 +102,62 @@
         android:id="@+id/menu_text_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
         android:ems="12"
         android:hint="현재시간"
-        android:textSize="15sp"
-        android:textColor="@android:color/black"
         android:textAlignment="center"
-        android:layout_marginTop="70dp"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/image_taken_date"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/menu_image" />
 
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="날짜/시간: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/image_taken_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menu_image"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:text="위치: "
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/image_taken_location"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:text=""
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView10"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="@+id/textView10" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

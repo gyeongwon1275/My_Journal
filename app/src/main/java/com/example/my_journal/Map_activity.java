@@ -361,7 +361,10 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    // 좌표를 받아서 한글주소로 나오게 하는 메서드
+    // 좌표를 받아서 주소로 나오게 하는 메서드
+    // List<Address> 에 정보를 넘기기 위해서 위도,경도를 geocoder.getFromLocation() 메서드 통해 변환
+    // Address 객체에 List<Address> 의 데이터를 넘겨서 address.getAddressLine() 통해 좌표에서 실제 주소로 변환받음
+
     // TODO
     public String getCurrentAddress(LatLng latlng) {
 
