@@ -1,4 +1,4 @@
-package com.example.my_journal;
+package com.example.my_journal.Journal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.my_journal.R;
 
 import java.util.Timer;
 

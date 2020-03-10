@@ -48,28 +48,25 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     private GoogleMap map;
-    private Marker currentMarker = null;
+    private Marker current_marker = null;
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
 
 
-    private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
-
-
-    // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용됩니다.
+    // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     boolean needRequest = false;
 
 
-    // 앱을 실행하기 위해 필요한 퍼미션을 정의합니다.
-    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};  // 외부 저장소
+    // 앱을 실행하기 위해 필요한 퍼미션을 정의
 
+    // ACCESS_FINE_LOCATION = Allows an app to access precise location
+    // ACCESS_COARSE_LOCATION = Allows an app to access approximate location
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     Location current_locatiion;
-    LatLng currentPosition;
-
+    LatLng current_position;
 
     private FusedLocationProviderClient fused_location_client;
     private LocationRequest location_request;
@@ -94,13 +91,6 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
                 // 정밀하게
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        // 현재위치지정을 한번만 하도록
-
-//                // 위치정보를 느린 간격으로 update
-//                .setInterval(UPDATE_INTERVAL_MS)
-//                // 외치정보를 빠른 간격으로 update
-//                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
-
         // 위치요청 설정
         LocationSettingsRequest.Builder builder =
                 new LocationSettingsRequest.Builder();
@@ -113,10 +103,12 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         fused_location_client = LocationServices.getFusedLocationProviderClient(this);
 
         // 구글 map fragment 생성
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        // onMapReady 메서드 호출
 
+        // Return the FragmentManager for interacting with fragments associated with this activity.
+        SupportMapFragment map_fragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+
+        // 위치검색바
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -160,7 +152,8 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        mapFragment.getMapAsync(this);
+        // getMapAsync must be called on the main thread
+        map_fragment.getMapAsync(this);
     }
 
     @Override
@@ -168,6 +161,9 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, "onMapReady :");
 
         map = googleMap;
+
+
+        // 지도 롱클릭 했을 때 마커표시
 
         map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -182,14 +178,11 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
                 // 선택한 좌표에서 주소를 받아와서 Marker 의 Title 에 표시
 
                 markerOptions.title(getCurrentAddress(latLng));
-                markerOptions.snippet("위도 : " +latLng.latitude + " " +"경도 : "+ latLng.longitude);
+                markerOptions.snippet("위도 : " + latLng.latitude + " " + "경도 : " + latLng.longitude);
 
                 map.clear();
-
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-
                 map.addMarker(markerOptions);
-
 
             }
         });
@@ -197,16 +190,16 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
 
         //지도의 초기위치를 설정
 
-        setDefaultLocation();
+        set_default_location();
 
 
         //런타임 퍼미션 처리
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
+
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
-
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
                 hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
@@ -215,7 +208,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
 
 
-            startLocationUpdates(); // 3. 위치 업데이트 시작
+            start_location_updates(); // 3. 위치 업데이트 시작
 
 
         } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
@@ -223,6 +216,8 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
 
+
+                // 앱 하단에 snackbar 띄움
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
                 Snackbar.make(map_layout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                         Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
@@ -273,19 +268,19 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
                 //location = locationList.get(0);
 
                 // 현재위치에 위치정보에서 위도, 경도 추출해서 집어넣음
-                currentPosition
+                current_position
                         = new LatLng(location.getLatitude(), location.getLongitude());
 
                 // 마커 제목 : 현재위치의 주소
-                String markerTitle = getCurrentAddress(currentPosition);
+                String markerTitle = getCurrentAddress(current_position);
                 // 자투리 내용 : 위도, 경도
-                String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
-                        + " 경도:" + String.valueOf(location.getLongitude());
+                String markerSnippet = "위도:" + location.getLatitude()
+                        + " 경도:" + location.getLongitude();
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
                 //현재 위치에 마커 생성하고 이동
-                setCurrentLocation(location, markerTitle, markerSnippet);
+                set_current_location(location, markerTitle, markerSnippet);
 
                 current_locatiion = location;
             }
@@ -293,11 +288,11 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
     };
 
 
-    private void startLocationUpdates() {
+    private void start_location_updates() {
 
         if (!checkLocationServicesStatus()) {
 
-            Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
+            Log.d(TAG, "start_location_updates : call showDialogForLocationServiceSetting");
             showDialogForLocationServiceSetting();
         } else {
 
@@ -310,12 +305,12 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
                     hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
 
-                Log.d(TAG, "startLocationUpdates : 퍼미션 안가지고 있음");
+                Log.d(TAG, "start_location_updates : 퍼미션 안가지고 있음");
                 return;
             }
 
 
-            Log.d(TAG, "startLocationUpdates : call fused_location_client.requestLocationUpdates");
+            Log.d(TAG, "start_location_updates : call fused_location_client.requestLocationUpdates");
 
             // 위치 업데이트 요청
             // 위치요청어떻게 할건지, 요청받아서 뭘할건지,
@@ -419,17 +414,17 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void setCurrentLocation(Location location, String markerTitle, String markerSnippet) {
+    public void set_current_location(Location location, String markerTitle, String markerSnippet) {
 
 
-        if (currentMarker != null) currentMarker.remove();
+        if (current_marker != null) current_marker.remove();
 
 
-        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng current_latlng = new LatLng(location.getLatitude(), location.getLongitude());
 
         MarkerOptions markerOptions = new MarkerOptions();
         // 마커에 현재위치 설정
-        markerOptions.position(currentLatLng);
+        markerOptions.position(current_latlng);
         // 마커 정보 설정
         markerOptions.title(markerTitle);
         markerOptions.snippet(markerSnippet);
@@ -437,36 +432,36 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.draggable(true);
 
 
-        currentMarker = map.addMarker(markerOptions);
+        current_marker = map.addMarker(markerOptions);
 
         // 마커 설정한 곳으로 카메라 이동
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(current_latlng);
         map.moveCamera(cameraUpdate);
 
     }
 
 
-    public void setDefaultLocation() {
+    public void set_default_location() {
 
 
         //기본 위치, Seoul
-        // 기본 위치 설정 안하면 처음 화면에서 한국이 아닌 곳으로 설정함
-        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
+        // 기본 위치 설정 안하면 처음 화면에서 한국이 아닌 곳으로 설정해서 서울로 설정함
+        LatLng default_location = new LatLng(37.56, 126.97);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
 
         // 현재위치 마커를 초기화
-        if (currentMarker != null) currentMarker.remove();
+        if (current_marker != null) current_marker.remove();
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(DEFAULT_LOCATION);
+        markerOptions.position(default_location);
         markerOptions.title(markerTitle);
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        currentMarker = map.addMarker(markerOptions);
+        current_marker = map.addMarker(markerOptions);
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(default_location, 15);
         map.moveCamera(cameraUpdate);
 
     }
@@ -519,7 +514,7 @@ public class Map_activity extends AppCompatActivity implements OnMapReadyCallbac
             if (check_result) {
 
                 // 퍼미션을 허용했다면 위치 업데이트를 시작합니다.
-                startLocationUpdates();
+                start_location_updates();
             } else {
                 // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
 

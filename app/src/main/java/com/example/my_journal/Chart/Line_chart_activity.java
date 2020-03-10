@@ -58,7 +58,7 @@ public class Line_chart_activity extends AppCompatActivity {
         setTitle("기분변화 그래프");
 
         // x축에 날짜를 표시하기 위한 메서드
-        setDate();
+        set_date();
 
 
         {
@@ -82,12 +82,15 @@ public class Line_chart_activity extends AppCompatActivity {
             chart.setScaleYEnabled(true);
             // 손가락으로 펼처서 확대설정
             chart.setPinchZoom(true);
+
+
         }
 
         // x축에 설정한 날짜를 그래프에 반영
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
+
                 return date_xAxis.get((int) value);
             }
         };
@@ -99,6 +102,8 @@ public class Line_chart_activity extends AppCompatActivity {
             xAxis = chart.getXAxis();
             // x축 최소간격 Af = 최소간격 A 씩 변화
             xAxis.setGranularity(1f);
+
+            xAxis.setTextSize(11f);
             // x축에 설정한 날짜를 그래프에 반영
             xAxis.setValueFormatter(formatter);
 
@@ -112,48 +117,49 @@ public class Line_chart_activity extends AppCompatActivity {
             chart.getAxisRight().setEnabled(false);
 
 
-            yAxis.enableGridDashedLine(10f, 10f, 0f);
+            yAxis.enableGridDashedLine(8f, 8f, 0f);
 
             // y 축 범위
             yAxis.setAxisMaximum(6f);
             yAxis.setAxisMinimum(0f);
+            yAxis.setSpaceTop(5f);
         }
 
 
-        {   // // Create Limit Lines // //
-            LimitLine llXAxis = new LimitLine(9f, "Index 10");
-            llXAxis.setLineWidth(4f);
-            llXAxis.enableDashedLine(10f, 10f, 0f);
-            llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-            llXAxis.setTextSize(10f);
-
-
-            LimitLine ll1 = new LimitLine(7f, "Upper Limit");
-            ll1.setLineWidth(4f);
-            ll1.enableDashedLine(10f, 10f, 0f);
-            ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
-            ll1.setTextSize(10f);
-
-
-            LimitLine ll2 = new LimitLine(-1f, "Lower Limit");
-            ll2.setLineWidth(4f);
-            ll2.enableDashedLine(10f, 10f, 0f);
-            ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-            ll2.setTextSize(10f);
-
-
-            // draw limit lines behind data instead of on top
-            yAxis.setDrawLimitLinesBehindData(true);
-            xAxis.setDrawLimitLinesBehindData(true);
-
-            // add limit lines
-            yAxis.addLimitLine(ll1);
-            yAxis.addLimitLine(ll2);
-            xAxis.addLimitLine(llXAxis);
-        }
+//        {   // // Create Limit Lines // //
+//            LimitLine llXAxis = new LimitLine(9f, "Index 10");
+//            llXAxis.setLineWidth(4f);
+//            llXAxis.enableDashedLine(10f, 10f, 0f);
+//            llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
+//            llXAxis.setTextSize(10f);
+//
+//
+//            LimitLine ll1 = new LimitLine(7f, "Upper Limit");
+//            ll1.setLineWidth(4f);
+//            ll1.enableDashedLine(10f, 10f, 0f);
+//            ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
+//            ll1.setTextSize(10f);
+//
+//
+//            LimitLine ll2 = new LimitLine(-1f, "Lower Limit");
+//            ll2.setLineWidth(4f);
+//            ll2.enableDashedLine(10f, 10f, 0f);
+//            ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
+//            ll2.setTextSize(10f);
+//
+//
+//            // draw limit lines behind data instead of on top
+//            yAxis.setDrawLimitLinesBehindData(true);
+//            xAxis.setDrawLimitLinesBehindData(true);
+//
+//            // add limit lines
+//            yAxis.addLimitLine(ll1);
+//            yAxis.addLimitLine(ll2);
+//            xAxis.addLimitLine(llXAxis);
+//        }
 
         // 데이터 설정
-        setData();
+        set_data();
 
         // draw points over time
         chart.animateX(1500);
@@ -165,7 +171,7 @@ public class Line_chart_activity extends AppCompatActivity {
         legend.setForm(LegendForm.CIRCLE);
     }
 
-    private void setData() {
+    private void set_data() {
 
         ArrayList<Entry> values = new ArrayList<>();
 
@@ -207,6 +213,7 @@ public class Line_chart_activity extends AppCompatActivity {
                 chart.getData().getDataSetCount() > 0) {
             dataSet = (LineDataSet) chart.getData().getDataSetByIndex(0);
             dataSet.setValues(values);
+
             dataSet.notifyDataSetChanged();
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
@@ -236,7 +243,7 @@ public class Line_chart_activity extends AppCompatActivity {
             dataSet.setFormSize(15.f);
 
             // text size of values
-            dataSet.setValueTextSize(9f);
+            dataSet.setValueTextSize(15f);
 
             // draw selection line as dashed
             dataSet.enableDashedHighlightLine(10f, 5f, 0f);
@@ -269,7 +276,7 @@ public class Line_chart_activity extends AppCompatActivity {
     }
 
 
-    public void setDate() {
+    public void set_date() {
 
         SharedPreferences preferences = getSharedPreferences(PAUSE, MODE_PRIVATE);
         String pause_save = preferences.getString(PAUSE, "");

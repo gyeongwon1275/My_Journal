@@ -37,7 +37,6 @@ import com.example.my_journal.Assess.Assess_journal_activitiy;
 import com.example.my_journal.Habit.Habit_activitiy;
 import com.example.my_journal.Hour_record.Hour_record_activitiy;
 import com.example.my_journal.Map_activity;
-import com.example.my_journal.Save_animation_activity;
 import com.example.my_journal.R;
 import com.example.my_journal.Setting_activity;
 
@@ -97,7 +96,7 @@ public class Write_journal_activitiy extends AppCompatActivity implements DatePi
     private String LOG_music = "music";
 
 
-    private Boolean isRunning = true;
+    private Boolean is_running = true;
     private Handler handler;
     private Thread thread = null;
     String time_result;
@@ -151,7 +150,7 @@ public class Write_journal_activitiy extends AppCompatActivity implements DatePi
                 int i = 0;
 
                 while (true) {
-                    while (isRunning) { //일시정지를 누르면 멈추도록
+                    while (is_running) { //일시정지를 누르면 멈추도록
                         Message msg = handler.obtainMessage(); // 얻다 메세지
                         msg.arg1 = i++;
                         handler.sendMessage(msg);
@@ -631,7 +630,7 @@ public class Write_journal_activitiy extends AppCompatActivity implements DatePi
         preferences = getSharedPreferences("write_journal", MODE_PRIVATE);
 
         editor = preferences.edit();
-
+        editor.putString("time",time_result);
         editor.putString("json_array", save_json_array);
         editor.putString("json_obj", save_json_obj);
 

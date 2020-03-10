@@ -67,7 +67,6 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
     ImageView item_journal_image;
 
 
-
     ArrayList<String> json_list = new ArrayList<>();
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -80,8 +79,6 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
         pause_save = "";
 
 
-
-
         Log.i(PAUSE, "pause_save : onCreate1" + pause_save);
 
         // 기존 onpause 에서 저장한 데이터 불러오기
@@ -91,14 +88,8 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
         pause_save = preferences.getString(PAUSE, "");
 
 
-
-
-
-
         // 데이터가 중복되서 들어감
         Log.i(PAUSE, "pause_save : onCreate2" + pause_save);
-
-
 
 
         add_journal = findViewById(R.id.add_journal);
@@ -165,9 +156,9 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
                 String date = jsonObject.getString("journal_date");
                 String mood = jsonObject.getString("journal_mood");
                 String image = jsonObject.getString("journal_image");
-                String time  = jsonObject.getString("journal_time");
+                String time = jsonObject.getString("journal_time");
 
-                Journal_item journal_item = new Journal_item(text, date, mood, Uri.parse(image),time);
+                Journal_item journal_item = new Journal_item(text, date, mood, Uri.parse(image), time);
                 items_journal.add(i, journal_item);
 
                 journal_adapter.notifyDataSetChanged();
@@ -330,7 +321,7 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
                 journal_image_uri = data.getStringExtra("journal_image");
                 journal_time = data.getStringExtra("journal_time");
 
-                journal_item = new Journal_item(journal_text, journal_date, journal_mood, Uri.parse(journal_image_uri),journal_time);
+                journal_item = new Journal_item(journal_text, journal_date, journal_mood, Uri.parse(journal_image_uri), journal_time);
                 items_journal.add(0, journal_item);
                 journal_adapter.notifyDataSetChanged();
 
@@ -353,8 +344,8 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
                 journal_date = data.getStringExtra("modify_date");
                 journal_mood = data.getStringExtra("modify_mood");
                 journal_image_uri = data.getStringExtra("modify_image");
-
-                journal_item = new Journal_item(journal_text, journal_date, journal_mood, Uri.parse(journal_image_uri),journal_time);
+                journal_time = data.getStringExtra("time");
+                journal_item = new Journal_item(journal_text, journal_date, journal_mood, Uri.parse(journal_image_uri), journal_time);
                 items_journal.set(modify_position, journal_item);
                 journal_adapter.notifyDataSetChanged();
 
@@ -370,11 +361,11 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
     public void on_journal_click(int position) {
 
 
-        Log.i(POS,"before"+modify_position+"");
+        Log.i(POS, "before" + modify_position + "");
         modify_position = 0;
 
         modify_position = position;
-        Log.i(POS,"after"+modify_position+"");
+        Log.i(POS, "after" + modify_position + "");
         Intent intent = new Intent(this, Modify_journal_activitiy.class);
         intent.putExtra("modify", items_journal.get(position));
         startActivityForResult(intent, MODIFY_JOURNAL);
@@ -393,9 +384,7 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                if(!searchView.isIconified())
-
-                {
+                if (!searchView.isIconified()) {
                     searchView.setIconified(true);
 
                 }
@@ -407,7 +396,7 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                final List<Journal_item> filterd_list = filter(items_journal,newText);
+                final List<Journal_item> filterd_list = filter(items_journal, newText);
 
 
                 journal_adapter.set_filter(filterd_list);
@@ -420,41 +409,29 @@ public class Main_journal_activitiy extends AppCompatActivity implements Journal
     }
 
 
+    private List<Journal_item> filter(List<Journal_item> filter_item, String query) {
+
+        query = query.toLowerCase();
+
+        final List<Journal_item> filterd_list = new ArrayList<>();
 
 
+        for (Journal_item journal_item : filter_item) {
+            final String text = journal_item.getText_journal().toLowerCase().trim();
 
-private List<Journal_item> filter (List<Journal_item> filter_item,String query)
-
-{
-
-  query = query.toLowerCase();
-
-  final List<Journal_item> filterd_list = new ArrayList<>();
+            if (text.startsWith(query)) {
+                filterd_list.add(journal_item);
 
 
-for(Journal_item journal_item : filter_item)
-
-{
-        final String text = journal_item.getText_journal().toLowerCase().trim();
-
-        if(text.startsWith(query))
-
-        {
-            filterd_list.add(journal_item);
-
+            }
 
 
         }
 
-
-}
-
-return filterd_list;
+        return filterd_list;
 
 
-}
-
-
+    }
 
 
 }

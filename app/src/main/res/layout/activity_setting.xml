@@ -100,33 +100,6 @@
         app:layout_constraintTop_toBottomOf="@+id/setting_alarm_text" />
 
     <TextView
-        android:id="@+id/manage_data_text"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/colorgrey"
-        android:gravity="center_vertical"
-        android:text="데이터관리"
-        android:textColor="@color/colorblack"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_alarm" />
-
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="30dp"
-
-    android:text="데이터 백업,복구"
-    android:textColor="@color/colorblack"
-    android:id="@+id/data_backup_text"
-    app:layout_constraintTop_toBottomOf="@id/manage_data_text"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:textSize="18dp"
-    android:gravity="center_vertical"/>
-
-    <TextView
         android:id="@+id/text_alarm"
         android:layout_width="0dp"
         android:layout_height="30dp"

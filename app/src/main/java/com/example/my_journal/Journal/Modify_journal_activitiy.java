@@ -26,6 +26,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,7 +50,6 @@ import com.example.my_journal.Assess.Assess_journal_activitiy;
 import com.example.my_journal.Habit.Habit_activitiy;
 import com.example.my_journal.Hour_record.Hour_record_activitiy;
 import com.example.my_journal.Map_activity;
-import com.example.my_journal.Save_animation_activity;
 import com.example.my_journal.R;
 import com.example.my_journal.Setting_activity;
 
@@ -111,9 +111,12 @@ public class Modify_journal_activitiy extends AppCompatActivity implements DateP
     private boolean play_condition = true;
     private Handler handler_asmr = new Handler();
     private final static String time = "time";
-
-
     //////seekbar/////
+    String time_result;
+    private Handler handler;
+    private Boolean is_running = true;
+    private Thread thread = null;
+
 
     // Bundle savedInstanceState -> 상태 저장된 번들 데이터가 들어온다.
     @Override
@@ -124,6 +127,68 @@ public class Modify_journal_activitiy extends AppCompatActivity implements DateP
         Log.i("modify", "oncreate()");
 
         setContentView(R.layout.activity_write_journal);
+
+        ///
+
+//        time_result = "";
+//        handler = new Handler() {
+//
+//            // handler 받는 쪽
+//
+//            // 메세지 받아서 어떻게 handle(처리) 할건지
+//            //
+//            @Override
+//            public void handleMessage(Message msg) {
+//                // 시간 format :
+//                int second = (msg.arg1 / 100) % 60;
+//                int minute = (msg.arg1 / 100) / 60;
+//
+//                // %03d = 3자리수 / %02d = 2자리수
+//                time_result = String.format("%02d 분 : %02d 초", minute, second);
+//
+//            }
+//        };
+//
+//        class Time_thread implements Runnable {
+//            @Override
+//            public void run() {
+//                int i = 0;
+//
+//                while (true) {
+//                    while (is_running) { //일시정지를 누르면 멈추도록
+//                        Message msg = handler.obtainMessage(); // 얻다 메세지
+//                        msg.arg1 = i++;
+//                        handler.sendMessage(msg);
+//
+//                        try {
+//                            Thread.sleep(10);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                            return; // 인터럽트 받을 경우 return됨
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        Time_thread time_thread = new Time_thread();
+//
+//        Thread thread = new Thread(time_thread);
+//
+//        thread.start();
+
+
+
+
+
+
+
+
+
+
+        ///
+
         connect_view();
 
         music_play_condition = true;
@@ -140,7 +205,7 @@ public class Modify_journal_activitiy extends AppCompatActivity implements DateP
             Glide.with(this).load( journal_item.getImage_journal()).into(journal_image);
             date_today.setText(journal_item.getDate_journal());
             rating_number.setText(journal_item.getRating_journal());
-
+            time_result = journal_item.getTime_journal();
             set_mood();
 
             selected_image = journal_item.getImage_journal();
@@ -505,88 +570,12 @@ public class Modify_journal_activitiy extends AppCompatActivity implements DateP
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
-        // 일기 내용, 날짜, 이미지, 기분 데이터를 json 형식으로 변환
+        if (thread != null) {
+            thread.interrupt();
 
-        // ex > json_journal 라는 JSON OBJ 에 아래내용이 들어간다.
-        // {  "journal_text":"56789",
-        // "journal_date":"2020-02-23",
-        // "journal_image":"content:\/\/com.android.providers.media.documents\/document\/image%3A20827",
-        // "journal_mood":""  }
+        }
 
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-//        JSONObject json_journal = new JSONObject();
-//
-//        json_journal.put("journal_text", edit_journal.getText().toString());
-//        json_journal.put("journal_date", date_today.getText().toString());
-//        json_journal.put("journal_mood", rating_number.getText().toString());
-//
-//        if (selected_image != null) {
-//            json_journal.put("journal_image", selected_image.toString());
-//        }
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-
-        // json 객체에 담긴 데이터를 Array 에 넣음
-
-//      ex> json_journal_array 에 아래내용이 들어감
-//      [  {  "journal_text":"56789",
-//      "journal_date":"2020-02-23",
-//      "journal_image":"content:\/\/com.android.providers.media.documents\/document\/image%3A20827",
-//      "journal_mood":""  }   ]
-
-
-//        JSONArray json_journal_array = new JSONArray();
-//
-//        json_journal_array.put(json_journal);
-//
-//        // Preferences에 저장 위해 JSON ARRAY 를 String 로 변환
-//
-//
-//        String save_json_array = json_journal_array.toString();
-//        String save_json_obj = json_journal.toString();
-//
-//
-//        // Preferences 에 저장 /  XML 파일명 : journal_json   /  key : journal
-//
-//        preferences = getSharedPreferences("write_journal", MODE_PRIVATE);
-//
-//        Log.i(WRITE_JOURNAL, "array_before" + save_json_array);
-//        Log.i(WRITE_JOURNAL, "array_before" + save_json_obj);
-//
-//        // 기존에 있었던 데이터에 현재 저장한 데이터를 합해서 preference 에 누적하여 저장
-//
-//        if (preferences.getString("write_journal_obj", "") == "") {
-//
-//            save_json_obj = save_json_obj + preferences.getString("write_journal_obj", "");
-//
-//
-//        } else if ((preferences.getString("write_journal_obj", "") != "")) {
-//            save_json_obj = save_json_obj + "," + preferences.getString("write_journal_obj", "");
-//
-//        }
-//
-//
-//        Log.i(WRITE_JOURNAL, "array_after" + save_json_array);
-//        Log.i(WRITE_JOURNAL, "array_after" + save_json_obj);
-//
-//        editor = preferences.edit();
-//
-//        editor.putString("write_journal_array", save_json_array);
-//        editor.putString("write_journal_obj", save_json_obj);
-//
-//        if (selected_image != null) {
-//            editor.putString("write_journal_image", selected_image.toString());
-//        }
-//
-//
-//        editor.commit();
-
-
-        // 일기내용 일기목록에 전달
 
 
         if (selected_image != null) {
@@ -595,8 +584,8 @@ public class Modify_journal_activitiy extends AppCompatActivity implements DateP
             intent.putExtra("modify_text", edit_journal.getText().toString());
             intent.putExtra("modify_date", date_today.getText().toString());
             intent.putExtra("modify_mood", rating_number.getText().toString());
-
             intent.putExtra("modify_image", selected_image.toString());
+            intent.putExtra("time",time_result);
 
             setResult(Main_journal_activitiy.RESULT_OK, intent);
 
@@ -607,6 +596,8 @@ public class Modify_journal_activitiy extends AppCompatActivity implements DateP
             intent.putExtra("modify_date", date_today.getText().toString());
             intent.putExtra("modify_mood", rating_number.getText().toString());
             intent.putExtra("modify_image", "null");
+            intent.putExtra("time",time_result);
+
             setResult(Main_journal_activitiy.RESULT_OK, intent);
 
 

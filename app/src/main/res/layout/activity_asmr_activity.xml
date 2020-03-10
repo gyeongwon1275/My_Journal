@@ -7,18 +7,6 @@
     tools:context="com.example.my_journal.ASMR.Asmr_menu_activity">
 
 
-    <com.airbnb.lottie.LottieAnimationView
-
-        android:id="@+id/amsr_lottie"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:lottie_autoPlay="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_fileName="1114-saving-quotes.json"
-        app:lottie_loop="false" />
 
     <ImageView
         android:id="@+id/small_river"

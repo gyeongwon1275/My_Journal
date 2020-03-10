@@ -20,7 +20,7 @@
         android:text="TextView"
 
         android:textColor="@color/colorblack"
-        android:textSize="14sp"
+        android:textSize="12sp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
