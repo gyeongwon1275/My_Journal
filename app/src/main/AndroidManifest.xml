@@ -22,11 +22,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Map_activity"></activity>
+        <activity android:name=".MapsActivityCurrentPlace">
+
+
+
+
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+
+
+
+
+        </activity>
+        <activity android:name=".Map_activity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBsiOdAZznpDoigayxZZxliS5-hLgt8GCA" />
+            android:value="@string/google_maps_key"  />
 
         <activity android:name=".Save_animation_activity" />
 
@@ -57,17 +76,28 @@
             android:name=".ASMR.Asmr_menu_activity"
             android:parentActivityName=".Menu_activity" />
         <activity android:name=".Game.Game_mole_result_activity" />
-        <activity android:name=".Game.Game_mole_activity" />
+        <activity
+            android:name=".Game.Game_mole_activity"
+            android:parentActivityName=".Menu_activity" />
         <activity android:name=".Advertisement.Confirm_ad_activity" />
         <activity android:name=".Advertisement.Advertisement_activity" />
         <activity android:name=".Habit_coupon.Habit_coupon_activitiy" />
         <activity android:name=".Habit.Habit_activitiy" />
         <activity android:name=".Password.Confirm_password_activitiy">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
+
+
+
+
+
+
+
+
+
+
+
         </activity>
         <activity
             android:name=".Assess.Assess_journal_activitiy"
@@ -91,7 +121,9 @@
             android:parentActivityName=".Menu_activity" />
         <activity android:name=".Start_journal_activity" />
         <activity android:name=".Menu_activity" />
-        <activity android:name=".Chart.Line_chart_activity" />
+        <activity
+            android:name=".Chart.Line_chart_activity"
+            android:parentActivityName=".Menu_activity" />
     </application>
 
 </manifest>

@@ -292,6 +292,8 @@ public class Menu_activity extends AppCompatActivity {
                     Map_activity map_activity = new Map_activity();
 
                     address = map_activity.getCurrentAddress(latLng);
+                    // 주소가 길어서 화면에 다 나오지 않음
+                    // 이에 대한민국을 주소에서 제외하였음
                     address = address.replace("대한민국 ","");
                     image_taken_location.setText(address);
 
